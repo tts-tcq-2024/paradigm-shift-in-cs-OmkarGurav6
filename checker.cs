@@ -2,16 +2,13 @@ using System;
 
 class Checker
 {
-    // Main entry point for the application
     static int Main()
     {
-        // Test cases to validate battery status
         RunTests();
         Console.WriteLine("All tests passed.");
         return 0;
     }
 
-    // Runs various test cases
     static void RunTests()
     {
         ExpectTrue(batteryIsOk(25, 70, 0.7F));
@@ -39,67 +36,79 @@ class Checker
         ExpectTrue(batteryIsOk(44, 79, 0.79F));
     }
 
-    // Checks if the battery conditions are okay
     static bool batteryIsOk(float temperature, float soc, float chargeRate)
     {
-        return IsTemperatureOk(temperature) && IsSocOk(soc) && IsChargeRateOk(chargeRate);
+        return IsConditionOk(temperature, IsTemperatureOk, "Temperature") &&
+               IsConditionOk(soc, IsSocOk, "State of Charge") &&
+               IsConditionOk(chargeRate, IsChargeRateOk, "Charge Rate");
     }
 
-    // Evaluates temperature condition
-    static bool IsTemperatureOk(float temperature)
+    static bool IsConditionOk(float value, Func<float, (bool, string)> checkFunc, string name)
+    {
+        var (isOk, message) = checkFunc(value);
+        if (!isOk)
+        {
+            Console.WriteLine($"{name} is out of range!");
+            return false;
+        }
+        if (message != null)
+        {
+            Console.WriteLine(message);
+        }
+        return true;
+    }
+
+    static (bool, string) IsTemperatureOk(float temperature)
     {
         if (temperature < 0 || temperature > 45)
         {
-            Console.WriteLine("Temperature is out of range!");
-            return false;
+            return (false, null);
         }
-
-        if (temperature <= 2.25 || temperature >= 42.75)
+        if (temperature <= 2.25)
         {
-            Console.WriteLine("WARNING! Temperature is " + (temperature <= 2.25 ? "LOW" : "HIGH") + "!");
-            return true;
+            return (true, "WARNING! Temperature is LOW!");
         }
-
-        return true;
+        if (temperature >= 42.75)
+        {
+            return (true, "WARNING! Temperature is HIGH!");
+        }
+        return (true, null);
     }
 
-    // Evaluates state of charge condition
-    static bool IsSocOk(float soc)
+    static (bool, string) IsSocOk(float soc)
     {
         if (soc < 20 || soc > 80)
         {
-            Console.WriteLine("State of Charge is out of range!");
-            return false;
+            return (false, null);
         }
-
-        if (soc <= 24 || soc >= 76)
+        if (soc <= 24)
         {
-            Console.WriteLine("WARNING! State of Charge is " + (soc <= 24 ? "LOW" : "HIGH") + "!");
-            return true;
+            return (true, "WARNING! State of Charge is LOW!");
         }
-
-        return true;
+        if (soc >= 76)
+        {
+            return (true, "WARNING! State of Charge is HIGH!");
+        }
+        return (true, null);
     }
 
-    // Evaluates charge rate condition
-    static bool IsChargeRateOk(float chargeRate)
+    static (bool, string) IsChargeRateOk(float chargeRate)
     {
         if (chargeRate > 0.8)
         {
-            Console.WriteLine("Charge Rate is out of range!");
-            return false;
+            return (false, null);
         }
-
-        if (chargeRate <= 0.04 || chargeRate >= 0.76)
+        if (chargeRate <= 0.04)
         {
-            Console.WriteLine("WARNING! Charge Rate is " + (chargeRate <= 0.04 ? "LOW" : "HIGH") + "!");
-            return true;
+            return (true, "WARNING! Charge Rate is LOW!");
         }
-
-        return true;
+        if (chargeRate >= 0.76)
+        {
+            return (true, "WARNING! Charge Rate is HIGH!");
+        }
+        return (true, null);
     }
 
-    // Checks if an expression is true, exits with error if not
     static void ExpectTrue(bool expression)
     {
         if (!expression)
@@ -109,7 +118,6 @@ class Checker
         }
     }
 
-    // Checks if an expression is false, exits with error if not
     static void ExpectFalse(bool expression)
     {
         if (expression)
