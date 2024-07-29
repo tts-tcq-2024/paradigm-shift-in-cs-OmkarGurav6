@@ -89,29 +89,29 @@ class Checker
 
     static int Main()
     {
-        ExpectTrue(batteryIsOk(25, 70, 0.7));
-        ExpectFalse(batteryIsOk(50, 85, 0.0));
+        ExpectTrue(batteryIsOk(25, 70, 0.7F));
+        ExpectFalse(batteryIsOk(50, 85, 0.0F));
 
         // Testing for low warning
-        ExpectTrue(batteryIsOk(2, 70, 0.7));
-        ExpectTrue(batteryIsOk(25, 22, 0.7));
-        ExpectTrue(batteryIsOk(25, 70, 0.02));
+        ExpectTrue(batteryIsOk(2, 70, 0.7F));
+        ExpectTrue(batteryIsOk(25, 22, 0.7F));
+        ExpectTrue(batteryIsOk(25, 70, 0.02F));
 
         // Testing for high warning
-        ExpectTrue(batteryIsOk(43, 70, 0.7));
-        ExpectTrue(batteryIsOk(25, 78, 0.7));
-        ExpectTrue(batteryIsOk(25, 70, 0.78));
+        ExpectTrue(batteryIsOk(43, 70, 0.7F));
+        ExpectTrue(batteryIsOk(25, 78, 0.7F));
+        ExpectTrue(batteryIsOk(25, 70, 0.78F));
 
         // Testing for low-high combination warning
-        ExpectTrue(batteryIsOk(2, 78, 0.78));
-        ExpectTrue(batteryIsOk(25, 78, 0.02));
-        ExpectTrue(batteryIsOk(2, 70, 0.78));
+        ExpectTrue(batteryIsOk(2, 78, 0.78F));
+        ExpectTrue(batteryIsOk(25, 78, 0.02F));
+        ExpectTrue(batteryIsOk(2, 70, 0.78F));
 
         // Testing for all low warning
-        ExpectTrue(batteryIsOk(1, 21, 0.03));
+        ExpectTrue(batteryIsOk(1, 21, 0.03F));
 
         // Testing for all high warning
-        ExpectTrue(batteryIsOk(44, 79, 0.79));
+        ExpectTrue(batteryIsOk(44, 79, 0.79F));
         
         Console.WriteLine("All ok");
         return 0;
