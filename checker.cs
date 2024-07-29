@@ -39,7 +39,7 @@ class Checker
         {
             Console.WriteLine($"Warning: {paramName} is approaching the lower limit!");
         }
-        else if (value => config.Max - config.WarningTolerance)
+        else if (value >= config.Max - config.WarningTolerance)
         {
             Console.WriteLine($"Warning: {paramName} is approaching the upper limit!");
         }
