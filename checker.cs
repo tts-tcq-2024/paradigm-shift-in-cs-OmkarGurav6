@@ -40,11 +40,11 @@ class Checker
 
     static void CheckWarning(float value, WarningConfig config, string paramName)
     {
-        if (value < config.Min + config.WarningTolerance)
+        if (value <= config.Min + config.WarningTolerance)
         {
             Console.WriteLine($"Warning: {paramName} is approaching the lower limit!");
         }
-        else if (value > config.Max - config.WarningTolerance)
+        else if (value >= config.Max - config.WarningTolerance)
         {
             Console.WriteLine($"Warning: {paramName} is approaching the upper limit!");
         }
