@@ -64,15 +64,12 @@ class Checker
         {
             return (false, null);
         }
-        if (temperature <= 2.25)
-        {
-            return (true, "WARNING! Temperature is LOW!");
-        }
-        if (temperature >= 42.75)
-        {
-            return (true, "WARNING! Temperature is HIGH!");
-        }
-        return (true, null);
+
+        return temperature <= 2.25
+            ? (true, "WARNING! Temperature is LOW!")
+            : (temperature >= 42.75
+                ? (true, "WARNING! Temperature is HIGH!")
+                : (true, null));
     }
 
     static (bool, string) IsSocOk(float soc)
@@ -81,15 +78,12 @@ class Checker
         {
             return (false, null);
         }
-        if (soc <= 24)
-        {
-            return (true, "WARNING! State of Charge is LOW!");
-        }
-        if (soc >= 76)
-        {
-            return (true, "WARNING! State of Charge is HIGH!");
-        }
-        return (true, null);
+
+        return soc <= 24
+            ? (true, "WARNING! State of Charge is LOW!")
+            : (soc >= 76
+                ? (true, "WARNING! State of Charge is HIGH!")
+                : (true, null));
     }
 
     static (bool, string) IsChargeRateOk(float chargeRate)
@@ -98,15 +92,12 @@ class Checker
         {
             return (false, null);
         }
-        if (chargeRate <= 0.04)
-        {
-            return (true, "WARNING! Charge Rate is LOW!");
-        }
-        if (chargeRate >= 0.76)
-        {
-            return (true, "WARNING! Charge Rate is HIGH!");
-        }
-        return (true, null);
+
+        return chargeRate <= 0.04
+            ? (true, "WARNING! Charge Rate is LOW!")
+            : (chargeRate >= 0.76
+                ? (true, "WARNING! Charge Rate is HIGH!")
+                : (true, null));
     }
 
     static void ExpectTrue(bool expression)
