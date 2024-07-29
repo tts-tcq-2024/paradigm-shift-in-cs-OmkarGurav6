@@ -1,93 +1,18 @@
+using System;
+
 class Checker
 {
-    static bool batteryIsOk(float temperature, float soc, float chargeRate)
-    {
-        bool isTemperatureOk = IsTemperatureOk(temperature);
-        bool isSocOk = IsSocOk(soc);
-        bool isChargeRateOk = IsChargeRateOk(chargeRate);
-
-        return isTemperatureOk && isSocOk && isChargeRateOk;
-    }
-
-    static bool IsTemperatureOk(float temperature)
-    {
-        if (temperature < 0 || temperature > 45)
-        {
-            Console.WriteLine("Temperature is out of range!");
-            return false;
-        }
-        else if(0 <= temperature && temperature <= 2.25)
-        {
-            Console.WriteLine("WARNING! Temperature is LOW!");
-            return true;
-        }
-        else if(42.75 <= temperature && temperature <= 45)
-        {
-            Console.WriteLine("WARNING! Temperature is HIGH!");
-            return true;
-        }
-        return true;
-    }
-
-    static bool IsSocOk(float soc)
-    {
-        if (soc < 20 || soc > 80)
-        {
-            Console.WriteLine("State of Charge is out of range!");
-            return false;
-        }
-        else if(20 <= soc && soc <= 24)
-        {
-            Console.WriteLine("WARNING! State of Charge is LOW!");
-            return true;
-        }
-        else if(76 <= soc && soc <= 80)
-        {
-            Console.WriteLine("WARNING! State of Charge is HIGH!");
-            return true;
-        }
-        return true;
-    }
-
-    static bool IsChargeRateOk(float chargeRate)
-    {
-        if (chargeRate > 0.8)
-        {
-            Console.WriteLine("Charge Rate is out of range!");
-            return false;
-        }
-        else if(0 <= chargeRate && chargeRate <= 0.04)
-        {
-            Console.WriteLine("WARNING! Charge Rate is LOW!");
-            return true;
-        }
-        else if(0.76 <= chargeRate && chargeRate <= 0.80)
-        {
-            Console.WriteLine("WARNING! Charge Rate is HIGH!");
-            return true;
-        }
-        return true;
-    }
-
-    static void ExpectTrue(bool expression)
-    {
-        if (!expression)
-        {
-            Console.WriteLine("Expected true, but got false");
-            Environment.Exit(1);
-        }
-    }
-
-    static void ExpectFalse(bool expression)
-    {
-        if (expression)
-        {
-            Console.WriteLine("Expected false, but got true");
-            Environment.Exit(1);
-        }
-    }
-
+    // Main entry point for the application
     static int Main()
+    {
+        // Test cases to validate battery status
+        RunTests();
+        Console.WriteLine("All tests passed.");
+        return 0;
+    }
+
+    // Runs various test cases
+    static void RunTests()
     {
         ExpectTrue(batteryIsOk(25, 70, 0.7F));
         ExpectFalse(batteryIsOk(50, 85, 0.0F));
@@ -112,8 +37,85 @@ class Checker
 
         // Testing for all high warning
         ExpectTrue(batteryIsOk(44, 79, 0.79F));
-        
-        Console.WriteLine("All ok");
-        return 0;
+    }
+
+    // Checks if the battery conditions are okay
+    static bool batteryIsOk(float temperature, float soc, float chargeRate)
+    {
+        return IsTemperatureOk(temperature) && IsSocOk(soc) && IsChargeRateOk(chargeRate);
+    }
+
+    // Evaluates temperature condition
+    static bool IsTemperatureOk(float temperature)
+    {
+        if (temperature < 0 || temperature > 45)
+        {
+            Console.WriteLine("Temperature is out of range!");
+            return false;
+        }
+
+        if (temperature <= 2.25 || temperature >= 42.75)
+        {
+            Console.WriteLine("WARNING! Temperature is " + (temperature <= 2.25 ? "LOW" : "HIGH") + "!");
+            return true;
+        }
+
+        return true;
+    }
+
+    // Evaluates state of charge condition
+    static bool IsSocOk(float soc)
+    {
+        if (soc < 20 || soc > 80)
+        {
+            Console.WriteLine("State of Charge is out of range!");
+            return false;
+        }
+
+        if (soc <= 24 || soc >= 76)
+        {
+            Console.WriteLine("WARNING! State of Charge is " + (soc <= 24 ? "LOW" : "HIGH") + "!");
+            return true;
+        }
+
+        return true;
+    }
+
+    // Evaluates charge rate condition
+    static bool IsChargeRateOk(float chargeRate)
+    {
+        if (chargeRate > 0.8)
+        {
+            Console.WriteLine("Charge Rate is out of range!");
+            return false;
+        }
+
+        if (chargeRate <= 0.04 || chargeRate >= 0.76)
+        {
+            Console.WriteLine("WARNING! Charge Rate is " + (chargeRate <= 0.04 ? "LOW" : "HIGH") + "!");
+            return true;
+        }
+
+        return true;
+    }
+
+    // Checks if an expression is true, exits with error if not
+    static void ExpectTrue(bool expression)
+    {
+        if (!expression)
+        {
+            Console.WriteLine("Expected true, but got false");
+            Environment.Exit(1);
+        }
+    }
+
+    // Checks if an expression is false, exits with error if not
+    static void ExpectFalse(bool expression)
+    {
+        if (expression)
+        {
+            Console.WriteLine("Expected false, but got true");
+            Environment.Exit(1);
+        }
     }
 }
