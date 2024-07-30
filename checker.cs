@@ -3,9 +3,9 @@ using System;
 class Checker
 {
     // Define configurations for each parameter with the option to enable/disable warnings
-    static readonly WarningConfig TemperatureConfig = new WarningConfig(45, 0, true);
-    static readonly WarningConfig SocConfig = new WarningConfig(80, 20, true);
-    static readonly WarningConfig ChargeRateConfig = new WarningConfig(0.8f, 0, true);
+    static readonly WarningConfig TemperatureConfig = new WarningConfig(45, true);
+    static readonly WarningConfig SocConfig = new WarningConfig(80, true);
+    static readonly WarningConfig ChargeRateConfig = new WarningConfig(0.8f, true);
 
     static bool batteryIsOk(float temperature, float soc, float chargeRate)
     {
@@ -102,14 +102,12 @@ class Checker
 class WarningConfig
 {
     public float Max { get; }
-    public float Min { get; }
     public float WarningTolerance { get; }
     public bool WarningEnabled { get; }
 
-    public WarningConfig(float max, float min, bool warningEnabled)
+    public WarningConfig(float max, bool warningEnabled)
     {
         Max = max;
-        Min = min;
         WarningEnabled = warningEnabled;
         WarningTolerance = CalculateWarningTolerance(max);
     }
